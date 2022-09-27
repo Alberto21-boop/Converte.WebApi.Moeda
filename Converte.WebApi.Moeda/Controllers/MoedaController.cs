@@ -57,9 +57,7 @@ public class MoedaController : ControllerBase
     [HttpPost("CalculaMoedas")]
     public IResult CalculaMoedas(string MoedaDesejada, string SuaMoeda, double Valor)
     {
-        
-        return Results.Ok(_pegarmoeda.CalculaMoedas(MoedaDesejada, SuaMoeda, Valor));
-       
+       return Results.Ok(_pegarmoeda.CalculaMoedas(MoedaDesejada, SuaMoeda, Valor));
     }
 
 }

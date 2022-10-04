@@ -19,30 +19,47 @@ public class PegarMoeda : InterfaceMoeda
 
     public List<Moedas> PegarTodasMoedas()
     {
-        return (List<Moedas>)Db.Query<Moedas>("SELECT * FROM Moedas").ToList();
+        return (List<Moedas>)Db.Query<Moedas>("SELECT * FROM moedas").ToList();
     }
 
     public Moedas PegaMoedaPorId(int id)
     {
-        return Db.QuerySingleOrDefault<Moedas>("SELECT * FROM Moedas WHERE Id = @Id", new {Id = id});
+        return Db.QuerySingleOrDefault<Moedas>("SELECT * FROM moedas WHERE id = @id", new {Id = id});
     }
 
     public void AddMoedas(Moedas moeda)
     {
-        string Npgsql = "INSERT INTO Moedas(Id, NomeMoeda, ValorMoeda) VALUES(@Id, @NomeMoeda, @ValorMoeda)";
+        string Npgsql = "INSERT INTO Moedas(Id, nomemoeda, valormoeda) VALUES(@Id, @nomemoeda, @valormoeda)";
 
         Db.Query(Npgsql, moeda);
     }
-    public void AlteraMoeda(Moedas moeda)
+    public void AlteraMoeda( Moedas moeda)
     {
-        string Npgsql = "UPDATE Moedas SET Id = @Id, NomeMoeda = @NomeMoeda, ValorMoeda = @ValorMoeda WHERE Id = @Id";
 
-        Db.Execute(Npgsql, moeda);
+
+        if(moeda == null)
+        {
+            var Npgsql = Db.Execute(@"UPDATE ""moedas"" SET ""nomemoeda"" = @nomemoeda WHERE ""id"" = @id ", moeda);
+            
+        }
+        else if(moeda == null)
+        {
+            var Npgsql = Db.Execute(@"UPDATE ""moedas"" SET ""valormoeda"" = @valormoeda WHERE ""id"" = @id ", moeda);
+            
+        }
+        else
+        {
+            var Npgsql = Db.Execute(@"UPDATE ""moedas"" SET ""nomemoeda"" = @nomemoeda, ""valormoeda"" = @valormoeda 
+                                     WHERE ""id"" = @id", moeda);
+        }
+
     }
+
+
 
     public void ApagaMoeda(int id)
     {
-        Db.Execute("DELETE FROM Moedas WHERE Id = @Id", new {Id = id});
+        Db.Execute("DELETE FROM moedas WHERE id = @id", new {id = id});
     }
 
     public double CalculaMoedas(string Moedadesejada, string SuaMoeda, double Valor)

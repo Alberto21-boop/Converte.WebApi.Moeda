@@ -41,9 +41,9 @@ public class MoedaController : ControllerBase
         return Ok(moedas);
     }
     [HttpPut("AlteraMoeda")]
-    public IActionResult AlteraMoeda(Moedas moedas)
+    public IActionResult AlteraMoeda(Moedas moeda)
     {
-        _pegarmoeda.AlteraMoeda(moedas);
+        _pegarmoeda.AlteraMoeda(moeda);
         return Ok();
     }
 

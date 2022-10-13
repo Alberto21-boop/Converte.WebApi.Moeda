@@ -35,10 +35,10 @@ public class MoedaController : ControllerBase
     }
     
     [HttpPost("AdicionaMoedas")]
-    public IActionResult AddMoedas(Moedas moedas)
+    public IActionResult AddMoedas(Moedas moeda)
     {
-        _pegarmoeda.AddMoedas(moedas);
-        return Ok(moedas);
+        _pegarmoeda.AddMoedas(moeda);
+        return Ok(moeda);
     }
     [HttpPut("AlteraMoeda")]
     public IActionResult AlteraMoeda(Moedas moeda)
@@ -48,16 +48,10 @@ public class MoedaController : ControllerBase
     }
 
     [HttpDelete("DeletaMoeda")]
-    public IActionResult ApagaMoeda(int id)
+    public IActionResult ApagaMoeda(int idmoeda)
     {
-        _pegarmoeda.ApagaMoeda(id);
+        _pegarmoeda.ApagaMoeda(idmoeda);
         return Ok();
-    }
-
-    [HttpPost("CalculaMoedas")]
-    public IResult CalculaMoedas(string MoedaDesejada, string SuaMoeda, double Valor)
-    {
-       return Results.Ok(_pegarmoeda.CalculaMoedas(MoedaDesejada, SuaMoeda, Valor));
     }
 
 }

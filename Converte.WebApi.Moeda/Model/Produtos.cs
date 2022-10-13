@@ -2,7 +2,7 @@
 
 public class Produtos
 {
-    public int Id { get; set; }
+    public int Idproduto { get; set; }
     public string Produto { get; set; } = default!;
     public double ValorProduto { get; set; }
     public string ProdutoMoeda{ get; set; }

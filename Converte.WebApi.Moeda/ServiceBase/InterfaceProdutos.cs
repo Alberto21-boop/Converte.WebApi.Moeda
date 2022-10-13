@@ -5,10 +5,10 @@ namespace Converte.WebApi.Moeda.ServiceBase;
 public interface InterfaceProdutos
 {
     public List<Produtos> PegarTodosOsProdutos();
-    public Produtos PegaProdutosPorId(int id);
-    public void AddProdutos(Produtos produtos);
-    public void AlteraProduto(Produtos produtos);
-    public void ApagaProduto(int id);
-    public double CalculaProdutos(string ProdutoDesejado, string SuaMoeda, string ProdutoMoeda);
+    public Produtos PegaProdutosPorId(int idproduto);
+    public void AddProdutos(Produtos produto);
+    public void AlteraProduto(Produtos produto);
+    public void ApagaProduto(int idproduto);
+    public double CalculaProdutos(string nomeproduto, string valordamoeda, string data);
 
 }

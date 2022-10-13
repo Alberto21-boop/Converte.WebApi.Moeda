@@ -55,8 +55,8 @@ public class ProdutosController : ControllerBase
         return Ok();
     }
     [HttpPost("CalculaProdutos")]
-    public IResult CalculaProdutos(string ProdutoDesejado, string SuaMoeda, string ProdutoMoeda)
+    public IResult CalculaProdutos(string nomeproduto, string valordamoeda, string data)
     {
-        return Results.Ok(_pegarprodutos.CalculaProdutos(ProdutoDesejado, SuaMoeda, ProdutoMoeda));
+        return Results.Ok(_pegarprodutos.CalculaProdutos(nomeproduto, valordamoeda, data));
     }
 }

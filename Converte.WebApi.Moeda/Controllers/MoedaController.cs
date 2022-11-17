@@ -35,10 +35,10 @@ public class MoedaController : ControllerBase
     }
     
     [HttpPost("AdicionaMoedas")]
-    public IActionResult AddMoedas(Moedas moeda)
+    public IActionResult AddMoedas(Moedas moedas)
     {
-        _pegarmoeda.AddMoedas(moeda);
-        return Ok(moeda);
+        _pegarmoeda.AddMoedas(moedas);
+        return Ok(moedas);
     }
     [HttpPut("AlteraMoeda")]
     public IActionResult AlteraMoeda(Moedas moeda)

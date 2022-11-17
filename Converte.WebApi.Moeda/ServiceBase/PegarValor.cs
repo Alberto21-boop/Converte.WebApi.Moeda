@@ -1,60 +1,57 @@
-﻿using Converte.WebApi.Moeda.Model;
+﻿using Converte.WebApi.Moeda.Base;
+using Converte.WebApi.Moeda.Model;
 using Dapper;
 using Npgsql;
 using System.Data;
 
 namespace Converte.WebApi.Moeda.ServiceBase;
 
-public class PegarCotacao : InterfaceValor
+public class PegarCotacao : BaseDb
 {
-    private IDbConnection Db;
-
-    public PegarCotacao()
-    {
-
-        Db = new NpgsqlConnection(@"Server=host.docker.internal;Port=49153;Database=postgres;User Id=postgres;Password=postgrespw;");
-    }
+   
 
     public List<Cotacao> PegarTodosValoresDoDia()
     {
-        return (List<Cotacao>)Db.Query<Cotacao>("SELECT * FROM cotacao").ToList();
+        return Db.Query<Cotacao>("SELECT * FROM Cotacao").ToList(); ;
     }
-    public Cotacao PegaValoresDiaPorId(int idcotacao)
+    public Cotacao PegaValoresDiaPorId(int id)
     {
-        return Db.QuerySingleOrDefault<Cotacao>("SELECT * FROM cotacao WHERE Idcotacao = @idcotacao", new { Idcotacao = idcotacao });
+        return Db.QuerySingleOrDefault<Cotacao>("SELECT * FROM Moedas WHERE id = @id", new { id = id });
     }
 
     public void AddValoresDoDia(Cotacao cotacao)
     {
-        string Npgsql = "INSERT INTO cotacao(idcotacao, data, moedanome, valordia) VALUES(@idcotacao, @data, @moedanome, @valordia)";
-
-        Db.Query(Npgsql, cotacao);
+        string Sql = "INSERT INTO Cotacao(Id, [Data], Valor, Id_Moedas) VALUES(@Id, @[Data], @Valordia, @Id_Moedas)";
+        Db.Query(Sql, cotacao);
     }
 
     public void AlteraValoresDoDia(Cotacao cotacao)
     {
-        string Npgsql = "UPDATE Produtos SET Idcotacao = @idcotacao, Data = @data, Moedanome = @Moedanome,  Valordia = @Valordia";
-
-        Db.Execute(Npgsql, cotacao);
+        var Sql = @"UPDATE Cotacao SET Valor = @Valor, [Data] = @Data, Id_Moeda = @Id_Moeda WHERE Id = @Id";
+        Db.Execute(Sql, cotacao);
     }
 
-    public void ApagaValoresDoDia(int idcotacao)
+    public void ApagaValoresDoDia(int id)
     {
-        Db.Execute("DELETE FROM cotacao WHERE Idcotacao = @idcotacao", new { Idcotacao = idcotacao });
+        Db.Execute("DELETE FROM Cotacao WHERE Id = @Id", new { Id = id });
     }
     public double CalculaMoedas(string Moedadesejada, string SuaMoeda, string cotacao, double valor)
     {
 
 
-        double moed = Db.QueryFirstOrDefault<double>(@"SELECT valordia FROM cotacao AS c 
-                                                     INNER JOIN moedas AS m ON m.nomemoeda = c.moedanome 
-                                                     WHERE c.moedanome = @moedanome and c.data = @data"
-                                                     ,new { moedanome = Moedadesejada, data = cotacao});
+        double moed = Db.QueryFirstOrDefault<double>(@"SELECT Cotacao.Valor, Moedas.Id, Cotacao.Id_Moedas, Moedas.Nome, Cotacao.[Data]
+                                                     FROM Cotacao
+                                                     INNER JOIN Moedas
+                                                     ON Moedas.Id = Id_Moedas
+                                                     WHERE Moedas.Nome = @Nome AND [Data] = @Data"
+                                                     , new { Nome = Moedadesejada, Data = cotacao});
 
-        double moed2 = Db.QueryFirstOrDefault<double>(@"SELECT valordia FROM cotacao AS c 
-                                                     INNER JOIN moedas AS m ON m.nomemoeda = c.moedanome 
-                                                     WHERE c.moedanome = @moedanome and c.data = @data",
-                                                     new { moedanome = SuaMoeda, data = cotacao });
+        double moed2 = Db.QueryFirstOrDefault<double>(@"SELECT Cotacao.Valor, Moedas.Id, Cotacao.Id_Moedas, Moedas.Nome, Cotacao.[Data]
+                                                     FROM Cotacao
+                                                     INNER JOIN Moedas
+                                                     ON Moedas.Id = Id_Moedas
+                                                     WHERE Moedas.Nome = @Nome AND [Data] = @Data",
+                                                     new { Nome = SuaMoeda, Data = cotacao });
 
 
         double resultado = valor * (moed2 / moed);

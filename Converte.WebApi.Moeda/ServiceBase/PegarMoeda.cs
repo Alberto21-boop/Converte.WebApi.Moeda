@@ -1,58 +1,38 @@
-﻿using Converte.WebApi.Moeda.Model;
+﻿using Converte.WebApi.Moeda.Base;
+using Converte.WebApi.Moeda.Model;
 using Dapper;
-using Npgsql;
 using System.Data;
 
 namespace Converte.WebApi.Moeda.ServiceBase;
 
-public class PegarMoeda : InterfaceMoeda
+public class PegarMoeda : BaseDb
 {
-
-
-    private IDbConnection Db;
-
-    public PegarMoeda()
-    {
-       
-        Db = new NpgsqlConnection(@"Server=host.docker.internal;Port=49153;Database=postgres;User Id=postgres;Password=postgrespw;");
-    }
 
     public List<Moedas> PegarTodasMoedas()
     {
-        return (List<Moedas>)Db.Query<Moedas>("SELECT * FROM valordia").ToList();
+        return Db.Query<Moedas>("SELECT * FROM Moedas").ToList();
     }
 
-    public Moedas PegaMoedaPorId(int idmoeda)
+    public Moedas PegaMoedaPorId(int id)
     {
-        return Db.QuerySingleOrDefault<Moedas>("SELECT * FROM valordia WHERE idmoeda = @idmoeda", new {idmoeda = idmoeda});
+        return Db.QuerySingleOrDefault<Moedas>("SELECT * FROM Moedas WHERE id = @id", new {id = id});
     }
 
-    public void AddMoedas(Moedas moeda)
+    public void AddMoedas(Moedas moedas)
     {
-        string Npgsql = "INSERT INTO valordia(idvalor, data, moedanome, valordia) VALUES(@idvalor, @data, @moedanome, @valordia)";
-
-        Db.Query(Npgsql, moeda);
-    }
-    public void AlteraMoeda(Moedas moeda)
-    {
-
-
-        if(moeda == null)
-        {
-            var Npgsql = Db.Execute(@"UPDATE ""moedas"" SET ""nomemoeda"" = @nomemoeda WHERE ""idmoeda"" = @idmoeda ", moeda);
-            
-        }
-        else
-        {
-            var Npgsql = Db.Execute(@"UPDATE ""moedas"" SET ""nomemoeda"" = @nomemoeda, WHERE ""idmoeda"" = @idmoeda", moeda);
-        }
-
+        var Sql = "INSERT INTO Moedas(Nome) VALUES(@Nome)";
+        Db.Execute(Sql, moedas);
     }
 
-
-    public void ApagaMoeda(int idmoeda)
+    public void AlteraMoeda(Moedas moedas)
     {
-        Db.Execute("DELETE FROM moedas WHERE idmoeda = @idmoeda", new {Idmoeda = idmoeda});
+        var Sql = @"UPDATE Moedas SET Nome = @Nome WHERE Id = @Id";
+        Db.Execute(Sql, moedas);
+    }
+
+    public void ApagaMoeda(int Id)
+    {
+        Db.Execute("DELETE FROM Moedas WHERE Id = @Id", new {Id = Id});
     }
 
    

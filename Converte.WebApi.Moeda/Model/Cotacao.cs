@@ -1,11 +1,17 @@
-﻿namespace Converte.WebApi.Moeda.Model;
+﻿using Dapper;
 
+namespace Converte.WebApi.Moeda.Model;
+
+[Table("[Cotacao]")]
 public class Cotacao
 {
-    public int Idcotacao { get; set; }
+    [Key]
+    [Column("Id")]
+    [IgnoreInsert]
+    public int Id { get; set; }
     public string Data { get; set; }
-    public string Moedanome { get; set; } = default!;
-    public double Valordia { get; set; }
+    public double Valor { get; set; }
+    public int Id_Moedas { get; set; }
 
     public Cotacao()
     {

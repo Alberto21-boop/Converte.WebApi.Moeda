@@ -8,8 +8,14 @@
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.123" />
+    <PackageReference Include="Dapper.Contrib.Ext" Version="1.0.5" />
     <PackageReference Include="Dapper.SimpleCRUD" Version="2.3.0" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.0-preview1.22279.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="7.0.0-rc.2.22472.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0-rc.2.22472.3" />
     <PackageReference Include="Npgsql" Version="6.0.7" />
+    <PackageReference Include="runtime.win7-x86.runtime.native.System.Data.SqlClient.sni" Version="4.3.0" />
+    <PackageReference Include="SqlCRUDRepository" Version="1.0.23" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
